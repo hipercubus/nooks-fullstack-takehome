@@ -83,7 +83,6 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("server:pauseVideo", { user });
   });
 
-  //TODO: When user seeks video
   //TODO: Receive video position from poll
 });
 

@@ -7,11 +7,30 @@ function VideoForm() {
   const videoId = useRef<HTMLInputElement>();
   const { state, setVideoId } = useContext(GlobalContext);
 
+  const getVideoId = (_url: string | undefined): string | undefined => {
+    let validVideoId: string | null;
+    try {
+      const url: any = new URL(_url || "");
+      // Params format
+      validVideoId = url.searchParams.get("v");
+      if (validVideoId) return validVideoId;
+
+      // Pathname format
+      validVideoId = url.pathname.replaceAll("/", "");
+      if (validVideoId) return validVideoId;
+
+      return _url;
+    } catch {
+      return _url;
+    }
+  };
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (videoId.current?.value) {
-      setVideoId(videoId.current?.value);
-    }
+
+    const validVideoId = getVideoId(videoId.current?.value);
+    if (validVideoId) return setVideoId(validVideoId);
+
     //TODO: Notify when videoId is empty
     //TODO: Make it work with youtube URL
   };
@@ -23,7 +42,7 @@ function VideoForm() {
           <h4>Hi {state.currentUser.name}!</h4>
           <TextField
             name="videoId"
-            label="Please enter a valid YouTube video id"
+            label="Please enter a valid YouTube video URL or ID"
             variant="standard"
             inputRef={videoId}
             fullWidth
@@ -31,7 +50,7 @@ function VideoForm() {
         </CardContent>
 
         <CardActions>
-          <Button type="submit"> Add video</Button>
+          <Button type="submit">Add video</Button>
         </CardActions>
       </CustomCard>
     </form>
