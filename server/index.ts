@@ -15,6 +15,7 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
+type VideoStatus = "PLAYING" | "PAUSED";
 
 type User = {
   id: string;
@@ -22,6 +23,7 @@ type User = {
 };
 const usersList: User[] = [];
 let currentVideoId: string;
+let currentVideoState: VideoStatus = "PAUSED";
 
 io.on("connection", (socket) => {
   console.log("User connected");
@@ -33,6 +35,7 @@ io.on("connection", (socket) => {
     io.emit("server:updateUsers", {
       usersList,
       currentVideoId,
+      currentVideoState,
       user,
     });
     //TODO: Handle if a video is playing
@@ -66,7 +69,13 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("server:closeVideo", { user });
   });
 
-  //TODO: When user plays video
+  // When user plays video
+  socket.on("client:playVideo", ({ user, time }) => {
+    console.log("user plays video", user);
+    currentVideoState = "PLAYING";
+    socket.broadcast.emit("server:playVideo", { user, time });
+  });
+
   //TODO: When user pauses video
   //TODO: When user seeks video
   //TODO: Receive video position from poll

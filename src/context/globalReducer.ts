@@ -1,4 +1,8 @@
-import { GlobalActionsType, GlobalStateType } from "../types/types";
+import {
+  GlobalActionsType,
+  GlobalStateType,
+  VideoStatus,
+} from "../types/types";
 
 export const globalReducer = (
   state: GlobalStateType,
@@ -48,6 +52,25 @@ export const globalReducer = (
           ...state.currentVideo,
           id: "",
           title: "",
+        },
+      };
+
+    case "PLAY_VIDEO":
+      return {
+        ...state,
+        currentVideo: {
+          ...state.currentVideo,
+          status: "PLAYING" as VideoStatus,
+          time: action.payload,
+        },
+      };
+
+    case "PAUSE_VIDEO":
+      return {
+        ...state,
+        currentVideo: {
+          ...state.currentVideo,
+          status: "PAUSED" as VideoStatus,
         },
       };
 

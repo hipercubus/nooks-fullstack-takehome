@@ -24,6 +24,8 @@ export function GlobalContextProvider({ children }: GlobalContextProviderType) {
     currentVideo: {
       id: "",
       title: "",
+      status: "PAUSED",
+      time: 0,
     },
     isVideoAdded: false,
   });
@@ -41,6 +43,8 @@ export function GlobalContextProvider({ children }: GlobalContextProviderType) {
         setVideoTitle: (title: string) =>
           dispatch({ type: "SET_VIDEO_TITLE", payload: title }),
         closeVideo: () => dispatch({ type: "CLOSE_VIDEO" }),
+        playVideo: (time) => dispatch({ type: "PLAY_VIDEO", payload: time }),
+        pauseVideo: () => dispatch({ type: "PAUSE_VIDEO" }),
         state,
         message,
         setMessage,

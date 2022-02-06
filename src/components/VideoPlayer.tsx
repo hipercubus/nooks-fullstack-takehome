@@ -1,14 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { CardContent, IconButton } from "@mui/material";
 import CustomCard from "./CustomCard";
 import styled from "@emotion/styled";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import ClearIcon from "@mui/icons-material/Clear";
-import YouTube, { YouTubeProps } from "react-youtube";
+import YouTube from "react-youtube";
 import { GlobalContext } from "../context/GlobalContext";
 
 function VideoPlayer() {
-  const { state, closeVideo, setVideoTitle } = useContext(GlobalContext);
+  const { state, closeVideo, setVideoTitle, playVideo } =
+    useContext(GlobalContext);
+  const videoRef = useRef<any>();
+
+  useEffect(() => {
+    if (videoRef.current && state.currentVideo.status === "PLAYING") {
+      videoRef.current.seekTo(state.currentVideo.time);
+      videoRef.current.playVideo();
+    }
+    if (videoRef.current && state.currentVideo.status === "PAUSED") {
+      videoRef.current.pauseVideo();
+    }
+  }, [state.currentVideo.status]);
 
   const opts: any = {
     height: "500",
@@ -18,18 +30,23 @@ function VideoPlayer() {
     },
   };
 
-  const handleClose = () => {
-    closeVideo();
-  };
   const handleReady = (event: any) => {
     const title = event.target?.getVideoData()?.title ?? "No title available";
     setVideoTitle(title);
+    videoRef.current = event.target;
   };
-  const handlePlay = () => {
-    //TODO: play video
+
+  const handlePlay = (event: any) => {
+    const time = event.target?.getCurrentTime();
+    playVideo(time);
   };
+
   const handlePause = () => {
     //TODO: pause video
+  };
+
+  const handleClose = () => {
+    closeVideo();
   };
 
   return (

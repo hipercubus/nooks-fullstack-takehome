@@ -15,6 +15,7 @@ var io = new Server(server, {
 });
 var usersList = [];
 var currentVideoId;
+var currentVideoState = "PAUSED";
 io.on("connection", function (socket) {
     console.log("User connected");
     // When user signs in
@@ -24,6 +25,7 @@ io.on("connection", function (socket) {
         io.emit("server:updateUsers", {
             usersList: usersList,
             currentVideoId: currentVideoId,
+            currentVideoState: currentVideoState,
             user: user
         });
         //TODO: Handle if a video is playing
@@ -53,7 +55,13 @@ io.on("connection", function (socket) {
         currentVideoId = null;
         socket.broadcast.emit("server:closeVideo", { user: user });
     });
-    //TODO: When user plays video
+    // When user plays video
+    socket.on("client:playVideo", function (_a) {
+        var user = _a.user, time = _a.time;
+        console.log("user plays video", user);
+        currentVideoState = "PLAYING";
+        socket.broadcast.emit("server:playVideo", { user: user, time: time });
+    });
     //TODO: When user pauses video
     //TODO: When user seeks video
     //TODO: Receive video position from poll
