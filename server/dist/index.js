@@ -27,8 +27,18 @@ io.on("connection", function (socket) {
             user: user
         });
         //TODO: Handle if a video is already added
+        //TODO: When user disconnects
+        socket.on("disconnect", function () {
+            console.log("user disconnected", user);
+            usersList.splice(usersList.findIndex(function (_user) { return user.id === _user.id; }), 1);
+            if (usersList.length) {
+                io.emit("server:userLeft", { usersList: usersList, user: user });
+            }
+            else {
+                currentVideoId = null;
+            }
+        });
     });
-    //TODO: When user disconnects
     //TODO: When user adds video
     //TODO: When user closes video
     //TODO: When user plays video

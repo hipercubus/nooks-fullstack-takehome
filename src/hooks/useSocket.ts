@@ -33,16 +33,24 @@ const useSocket = () => {
       setUsersList(usersList);
     });
 
+    // When another user leaves
+    socket.on("server:userLeft", ({ usersList, user }) => {
+      if (state.isSignedIn && state.currentUser.id !== user?.id) {
+        console.log(`${user.name} has left the party!`);
+        setUsersList(usersList);
+      }
+    });
+
     //TODO: When another user adds video
     //TODO: When another user closes video
     //TODO: When another user plays video
     //TODO: When another user pauses video
     //TODO: When another user seeks video
 
-    return () => {
-      socket.disconnect();
-    };
-  });
+    // return () => {
+    //   socket.disconnect();
+    // };
+  }, [state.isSignedIn]);
 };
 
 export default useSocket;
