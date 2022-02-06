@@ -16,10 +16,28 @@ const io = new Server(server, {
   },
 });
 
+type User = {
+  id: string;
+  name: string;
+};
+const usersList: User[] = [];
+let currentVideoId: string;
+
 io.on("connection", (socket) => {
   console.log("User connected");
 
-  //TODO: When user signs in
+  // When user signs in
+  socket.on("client:join", (user) => {
+    console.log("user joined", user, currentVideoId);
+    usersList.push({ id: user.id, name: user.name });
+    io.emit("server:updateUsers", {
+      usersList,
+      currentVideoId,
+      user,
+    });
+    //TODO: Handle if a video is already added
+  });
+
   //TODO: When user disconnects
   //TODO: When user adds video
   //TODO: When user closes video

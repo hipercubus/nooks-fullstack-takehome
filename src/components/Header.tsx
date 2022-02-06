@@ -19,7 +19,14 @@ function Header() {
         {!state.isSignedIn ? (
           <AccountCircle />
         ) : (
-          <UserAvatar name={state.currentUser.name} color="darkmagenta" />
+          <>
+            {state.usersList
+              .filter((user) => user.id !== state.currentUser.id)
+              .map((user) => (
+                <UserAvatar key={user.id} name={user.name} color="royalblue" />
+              ))}
+            <UserAvatar name={state.currentUser.name} color="darkmagenta" />
+          </>
         )}
       </UsersBar>
     </CustomAppBar>
@@ -42,6 +49,9 @@ const Logo = styled.div`
   gap: 0.5rem;
 `;
 
-const UsersBar = styled.div``;
+const UsersBar = styled.div`
+  display: flex;
+  gap: 0.3rem;
+`;
 
 export default Header;

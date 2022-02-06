@@ -19,9 +19,9 @@ export const globalReducer = (
       };
 
     case "SET_USERS_LIST":
-      //TODO: Keep users list alive
       return {
         ...state,
+        usersList: action.payload,
       };
 
     case "SET_VIDEO_ID":
