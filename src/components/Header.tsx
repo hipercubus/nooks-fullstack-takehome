@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "@emotion/styled";
 import { AppBar } from "@mui/material";
 import OndemandVideoIcon from "@mui/icons-material/OndemandVideo";
+import { AccountCircle } from "@mui/icons-material";
+import { GlobalContext } from "../context/GlobalContext";
+import UserAvatar from "./UserAvatar";
 
 function Header() {
+  const { state } = useContext(GlobalContext);
+
   return (
     <CustomAppBar position="static" color="transparent">
       <Logo>
         <OndemandVideoIcon />
         <span>Youtube Watch Party</span>
       </Logo>
+      <UsersBar>
+        {!state.isSignedIn ? (
+          <AccountCircle />
+        ) : (
+          <UserAvatar name={state.currentUser.name} color="darkmagenta" />
+        )}
+      </UsersBar>
     </CustomAppBar>
   );
 }
@@ -29,5 +41,7 @@ const Logo = styled.div`
   align-items: center;
   gap: 0.5rem;
 `;
+
+const UsersBar = styled.div``;
 
 export default Header;
