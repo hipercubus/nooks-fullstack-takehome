@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useRef } from "react";
 import {
   Button,
   Card,
@@ -9,9 +9,13 @@ import {
 import styled from "@emotion/styled";
 
 function SignInForm() {
+  const userName = useRef<HTMLInputElement>();
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit");
+    if (userName.current?.value) {
+      //TODO: sign in
+    }
   };
 
   return (
@@ -23,6 +27,7 @@ function SignInForm() {
             name="userName"
             label="Please enter your name"
             variant="standard"
+            inputRef={userName}
             fullWidth
           />
         </CardContent>
