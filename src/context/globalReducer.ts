@@ -12,9 +12,9 @@ export const globalReducer = (
         currentUser: { ...state.currentUser, name: action.payload },
       };
     case "SET_USER_ID":
-      //TODO: Set id
       return {
         ...state,
+        currentUser: { ...state.currentUser, id: action.payload },
       };
     case "SET_USERS_LIST":
       //TODO: Keep users list alive
