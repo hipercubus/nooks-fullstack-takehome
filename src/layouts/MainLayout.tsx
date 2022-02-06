@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import Header from "../components/Header";
+import Toast from "../components/Toast";
 
 type Props = {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ function MainLayout({ children }: Props) {
     <MainSection>
       <Header />
       <Main>{children}</Main>
+      <Toast />
     </MainSection>
   );
 }

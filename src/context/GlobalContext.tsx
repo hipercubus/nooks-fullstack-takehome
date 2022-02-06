@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import {
   GlobalContextProviderType,
@@ -27,6 +27,7 @@ export function GlobalContextProvider({ children }: GlobalContextProviderType) {
     },
     isVideoAdded: false,
   });
+  const [message, setMessage] = useState<string | null>();
 
   return (
     <GlobalContext.Provider
@@ -41,6 +42,8 @@ export function GlobalContextProvider({ children }: GlobalContextProviderType) {
           dispatch({ type: "SET_VIDEO_TITLE", payload: title }),
         closeVideo: () => dispatch({ type: "CLOSE_VIDEO" }),
         state,
+        message,
+        setMessage,
       }}
     >
       {children}

@@ -14,6 +14,8 @@ export type GlobalContextType = {
   setVideoTitle: (title: string) => void;
   closeVideo: () => void;
   state: GlobalStateType;
+  message?: string | null;
+  setMessage: (message: string | null) => void;
 };
 export type GlobalContextProviderType = {
   children: React.ReactNode;

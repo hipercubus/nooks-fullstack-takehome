@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import { GlobalContext } from "../context/GlobalContext";
 
 const useSocket = () => {
-  const { state, setUsersList } = useContext(GlobalContext);
+  const { state, setUsersList, setMessage } = useContext(GlobalContext);
   const prevSignedIn = useRef<boolean>(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const useSocket = () => {
     // When another user signs in
     socket.on("server:updateUsers", ({ usersList, currentVideoId, user }) => {
       if (state.isSignedIn && state.currentUser.id !== user?.id) {
-        console.log(`${user.name} has joined the party!`);
+        setMessage(`${user.name} has joined the party!`);
       }
       //TODO: Handle if a video is already added
       setUsersList(usersList);
@@ -36,7 +36,7 @@ const useSocket = () => {
     // When another user leaves
     socket.on("server:userLeft", ({ usersList, user }) => {
       if (state.isSignedIn && state.currentUser.id !== user?.id) {
-        console.log(`${user.name} has left the party!`);
+        setMessage(`${user.name} has left the party!`);
         setUsersList(usersList);
       }
     });
