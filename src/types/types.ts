@@ -11,6 +11,8 @@ export type GlobalContextType = {
   setUserId: (id: string) => void;
   setUsersList: (usersList: User[]) => void;
   setVideoId: (videoId: string) => void;
+  setVideoTitle: (title: string) => void;
+  closeVideo: () => void;
   state: GlobalStateType;
 };
 export type GlobalContextProviderType = {
@@ -27,4 +29,6 @@ export type GlobalActionsType =
   | { type: "SIGN_IN"; payload: string }
   | { type: "SET_USER_ID"; payload: string }
   | { type: "SET_USERS_LIST"; payload: User[] }
-  | { type: "SET_VIDEO_ID"; payload: string };
+  | { type: "SET_VIDEO_ID"; payload: string }
+  | { type: "SET_VIDEO_TITLE"; payload: string }
+  | { type: "CLOSE_VIDEO" };

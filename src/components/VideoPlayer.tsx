@@ -1,17 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
 import { CardContent, IconButton } from "@mui/material";
 import CustomCard from "./CustomCard";
 import styled from "@emotion/styled";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import ClearIcon from "@mui/icons-material/Clear";
+import YouTube from "react-youtube";
+import { GlobalContext } from "../context/GlobalContext";
 
 function VideoPlayer() {
+  const { state } = useContext(GlobalContext);
+
+  const opts: any = {
+    height: "500",
+    width: "800",
+    playerVars: {
+      autoplay: false,
+    },
+  };
+
   const handleClose = () => {
     //TODO: Close video
   };
+  const handleReady = () => {
+    //TODO: set title
+  };
+  const handlePlay = () => {
+    //TODO: play video
+  };
+  const handlePause = () => {
+    //TODO: pause video
+  };
 
   return (
-    <CustomCard width={"60rem"}>
+    <CustomCard maxWidth={"900px"}>
       <CardContent>
         <Header>
           <HeaderLeft>
@@ -24,7 +45,15 @@ function VideoPlayer() {
             </IconButton>
           </HeaderRight>
         </Header>
-        <Video>here it goes the video</Video>
+        <Video>
+          <YouTube
+            videoId={state.currentVideo.id}
+            opts={opts}
+            onReady={handleReady}
+            onPlay={handlePlay}
+            onPause={handlePause}
+          />
+        </Video>
       </CardContent>
     </CustomCard>
   );

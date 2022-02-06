@@ -3,10 +3,17 @@ import { Card } from "@mui/material";
 
 type Props = {
   children: ReactNode;
-  width?: string;
+  maxWidth?: string;
+  minWidth?: string;
 };
-function CustomCard({ children, width = "30rem" }: Props) {
-  return <Card sx={{ width, background: "#ffffffcc" }}>{children}</Card>;
+function CustomCard({
+  children,
+  maxWidth = "30rem",
+  minWidth = "30rem",
+}: Props) {
+  return (
+    <Card sx={{ maxWidth, minWidth, background: "#ffffffcc" }}>{children}</Card>
+  );
 }
 
 export default CustomCard;

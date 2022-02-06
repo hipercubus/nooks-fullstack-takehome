@@ -37,6 +37,9 @@ export function GlobalContextProvider({ children }: GlobalContextProviderType) {
           dispatch({ type: "SET_USERS_LIST", payload: usersList }),
         setVideoId: (videoId: string) =>
           dispatch({ type: "SET_VIDEO_ID", payload: videoId }),
+        setVideoTitle: (title: string) =>
+          dispatch({ type: "SET_VIDEO_TITLE", payload: title }),
+        closeVideo: () => dispatch({ type: "CLOSE_VIDEO" }),
         state,
       }}
     >
