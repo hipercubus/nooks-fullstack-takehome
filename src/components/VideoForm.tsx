@@ -32,7 +32,6 @@ function VideoForm() {
     if (validVideoId) return setVideoId(validVideoId);
 
     //TODO: Notify when videoId is empty
-    //TODO: Make it work with youtube URL
   };
 
   return (
