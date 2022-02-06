@@ -21,6 +21,11 @@ export function GlobalContextProvider({ children }: GlobalContextProviderType) {
     },
     usersList: [],
     isSignedIn: false,
+    currentVideo: {
+      id: "",
+      title: "",
+    },
+    isVideoAdded: false,
   });
 
   return (
@@ -30,6 +35,8 @@ export function GlobalContextProvider({ children }: GlobalContextProviderType) {
         setUserId: (id: string) => dispatch({ type: "SIGN_IN", payload: id }),
         setUsersList: (usersList: User[]) =>
           dispatch({ type: "SET_USERS_LIST", payload: usersList }),
+        setVideoId: (videoId: string) =>
+          dispatch({ type: "SET_VIDEO_ID", payload: videoId }),
         state,
       }}
     >

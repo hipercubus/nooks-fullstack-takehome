@@ -1,4 +1,4 @@
-import React, { FormEvent, useRef } from "react";
+import React, { FormEvent, useContext, useRef } from "react";
 import {
   Button,
   Card,
@@ -7,15 +7,18 @@ import {
   TextField,
 } from "@mui/material";
 import styled from "@emotion/styled";
+import { GlobalContext } from "../context/GlobalContext";
 
 function SignInForm() {
   const userName = useRef<HTMLInputElement>();
+  const { signIn } = useContext(GlobalContext);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (userName.current?.value) {
-      //TODO: sign in
+      signIn(userName.current?.value);
     }
+    //TODO: Notify when userName is empty
   };
 
   return (
@@ -32,7 +35,7 @@ function SignInForm() {
           />
         </CardContent>
         <CardActions>
-          <Button> Add a youtube video</Button>
+          <Button type="submit">Sign in</Button>
         </CardActions>
       </CustomCard>
     </form>
