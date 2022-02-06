@@ -59,7 +59,13 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("server:updateVideo", { user, currentVideoId });
   });
 
-  //TODO: When user closes video
+  // When user closes video
+  socket.on("client:closeVideo", ({ user }) => {
+    console.log("user close video", user);
+    currentVideoId = null;
+    socket.broadcast.emit("server:closeVideo", { user });
+  });
+
   //TODO: When user plays video
   //TODO: When user pauses video
   //TODO: When user seeks video

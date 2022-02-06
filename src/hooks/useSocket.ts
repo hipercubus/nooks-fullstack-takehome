@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import { GlobalContext } from "../context/GlobalContext";
 
 const useSocket = () => {
-  const { state, setUsersList, setMessage, setVideoId } =
+  const { state, setUsersList, setMessage, setVideoId, closeVideo } =
     useContext(GlobalContext);
   const prevSignedIn = useRef<boolean>(false);
   const prevVideoAdded = useRef<boolean>(false);
@@ -30,7 +30,14 @@ const useSocket = () => {
       });
     }
 
-    //TODO: When current user closes video
+    //When current user closes video
+    if (state.isSignedIn && !state.isVideoAdded && prevVideoAdded.current) {
+      prevVideoAdded.current = false;
+      socket.emit("client:closeVideo", {
+        user: state.currentUser,
+      });
+    }
+
     //TODO: When current user plays video
     //TODO: When current user pauses video
     //TODO: When current user seeks video
@@ -67,7 +74,15 @@ const useSocket = () => {
       }
     });
 
-    //TODO: When another user closes video
+    // When another user closes video
+    socket.on("server:closeVideo", ({ user }) => {
+      if (state.isSignedIn && state.currentUser.id !== user?.id) {
+        setMessage(`${user.name} has closed the video!`);
+        prevVideoAdded.current = false;
+        closeVideo();
+      }
+    });
+
     //TODO: When another user plays video
     //TODO: When another user pauses video
     //TODO: When another user seeks video

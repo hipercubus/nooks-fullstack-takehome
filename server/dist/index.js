@@ -26,8 +26,8 @@ io.on("connection", function (socket) {
             currentVideoId: currentVideoId,
             user: user
         });
-        //TODO: Handle if a video is already added
-        //TODO: When user disconnects
+        //TODO: Handle if a video is playing
+        // When user disconnects
         socket.on("disconnect", function () {
             console.log("user disconnected", user);
             usersList.splice(usersList.findIndex(function (_user) { return user.id === _user.id; }), 1);
@@ -39,11 +39,24 @@ io.on("connection", function (socket) {
             }
         });
     });
-    //TODO: When user adds video
-    //TODO: When user closes video
+    // When user adds video
+    socket.on("client:setVideo", function (_a) {
+        var user = _a.user, videoId = _a.videoId;
+        console.log("user set video", user, videoId);
+        currentVideoId = videoId;
+        socket.broadcast.emit("server:updateVideo", { user: user, currentVideoId: currentVideoId });
+    });
+    // When user closes video
+    socket.on("client:closeVideo", function (_a) {
+        var user = _a.user;
+        console.log("user close video", user);
+        currentVideoId = null;
+        socket.broadcast.emit("server:closeVideo", { user: user });
+    });
     //TODO: When user plays video
     //TODO: When user pauses video
     //TODO: When user seeks video
+    //TODO: Receive video position from poll
 });
 server.listen(3001, function () {
     console.log("listening on *:3001");
