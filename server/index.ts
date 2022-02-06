@@ -76,7 +76,13 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("server:playVideo", { user, time });
   });
 
-  //TODO: When user pauses video
+  // When user pauses video
+  socket.on("client:pauseVideo", ({ user }) => {
+    console.log("user pauses video", user);
+    currentVideoState = "PAUSED";
+    socket.broadcast.emit("server:pauseVideo", { user });
+  });
+
   //TODO: When user seeks video
   //TODO: Receive video position from poll
 });

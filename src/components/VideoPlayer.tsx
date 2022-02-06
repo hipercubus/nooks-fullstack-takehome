@@ -8,7 +8,7 @@ import YouTube from "react-youtube";
 import { GlobalContext } from "../context/GlobalContext";
 
 function VideoPlayer() {
-  const { state, closeVideo, setVideoTitle, playVideo } =
+  const { state, closeVideo, setVideoTitle, playVideo, pauseVideo } =
     useContext(GlobalContext);
   const videoRef = useRef<any>();
 
@@ -42,7 +42,7 @@ function VideoPlayer() {
   };
 
   const handlePause = () => {
-    //TODO: pause video
+    pauseVideo();
   };
 
   const handleClose = () => {

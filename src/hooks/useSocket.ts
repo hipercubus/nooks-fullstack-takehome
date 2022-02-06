@@ -4,8 +4,15 @@ import { GlobalContext } from "../context/GlobalContext";
 import { VideoStatus } from "../types/types";
 
 const useSocket = () => {
-  const { state, setUsersList, setMessage, setVideoId, closeVideo, playVideo } =
-    useContext(GlobalContext);
+  const {
+    state,
+    setUsersList,
+    setMessage,
+    setVideoId,
+    closeVideo,
+    playVideo,
+    pauseVideo,
+  } = useContext(GlobalContext);
   const prevSignedIn = useRef<boolean>(false);
   const prevVideoAdded = useRef<boolean>(false);
   const prevVideoStatus = useRef<VideoStatus>("PAUSED");
@@ -53,7 +60,19 @@ const useSocket = () => {
       });
     }
 
-    //TODO: When current user pauses video
+    //When current user pauses video
+    if (
+      state.isSignedIn &&
+      state.isVideoAdded &&
+      prevVideoStatus.current === "PLAYING" &&
+      state.currentVideo.status === "PAUSED"
+    ) {
+      prevVideoStatus.current = "PAUSED";
+      socket.emit("client:pauseVideo", {
+        user: state.currentUser,
+      });
+    }
+
     //TODO: Poll to transmit video position
 
     // When another user signs in
@@ -111,7 +130,14 @@ const useSocket = () => {
       }
     });
 
-    //TODO: When another user pauses video
+    // When another user pauses video
+    socket.on("server:pauseVideo", ({ user }) => {
+      if (state.isSignedIn && state.currentUser.id !== user?.id) {
+        setMessage(`${user.name} has paused the video!`);
+        prevVideoStatus.current = "PAUSED";
+        pauseVideo();
+      }
+    });
 
     // return () => {
     //   socket.disconnect();
