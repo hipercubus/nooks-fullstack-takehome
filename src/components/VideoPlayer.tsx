@@ -4,11 +4,11 @@ import CustomCard from "./CustomCard";
 import styled from "@emotion/styled";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import ClearIcon from "@mui/icons-material/Clear";
-import YouTube from "react-youtube";
+import YouTube, { YouTubeProps } from "react-youtube";
 import { GlobalContext } from "../context/GlobalContext";
 
 function VideoPlayer() {
-  const { state } = useContext(GlobalContext);
+  const { state, closeVideo, setVideoTitle } = useContext(GlobalContext);
 
   const opts: any = {
     height: "500",
@@ -19,10 +19,11 @@ function VideoPlayer() {
   };
 
   const handleClose = () => {
-    //TODO: Close video
+    closeVideo();
   };
-  const handleReady = () => {
-    //TODO: set title
+  const handleReady = (event: any) => {
+    const title = event.target?.getVideoData()?.title ?? "No title available";
+    setVideoTitle(title);
   };
   const handlePlay = () => {
     //TODO: play video
@@ -37,7 +38,7 @@ function VideoPlayer() {
         <Header>
           <HeaderLeft>
             <YouTubeIcon />
-            <Title>Video Title</Title>
+            <Title>{state.currentVideo.title}</Title>
           </HeaderLeft>
           <HeaderRight>
             <IconButton size="small" onClick={handleClose}>
