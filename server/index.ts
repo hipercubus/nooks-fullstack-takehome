@@ -35,9 +35,9 @@ io.on("connection", (socket) => {
       currentVideoId,
       user,
     });
-    //TODO: Handle if a video is already added
+    //TODO: Handle if a video is playing
 
-    //TODO: When user disconnects
+    // When user disconnects
     socket.on("disconnect", () => {
       console.log("user disconnected", user);
       usersList.splice(
@@ -52,11 +52,18 @@ io.on("connection", (socket) => {
     });
   });
 
-  //TODO: When user adds video
+  // When user adds video
+  socket.on("client:setVideo", ({ user, videoId }) => {
+    console.log("user set video", user, videoId);
+    currentVideoId = videoId;
+    socket.broadcast.emit("server:updateVideo", { user, currentVideoId });
+  });
+
   //TODO: When user closes video
   //TODO: When user plays video
   //TODO: When user pauses video
   //TODO: When user seeks video
+  //TODO: Receive video position from poll
 });
 
 server.listen(3001, () => {

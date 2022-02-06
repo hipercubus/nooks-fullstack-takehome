@@ -3,8 +3,10 @@ import { io } from "socket.io-client";
 import { GlobalContext } from "../context/GlobalContext";
 
 const useSocket = () => {
-  const { state, setUsersList, setMessage } = useContext(GlobalContext);
+  const { state, setUsersList, setMessage, setVideoId } =
+    useContext(GlobalContext);
   const prevSignedIn = useRef<boolean>(false);
+  const prevVideoAdded = useRef<boolean>(false);
 
   useEffect(() => {
     const socket = io("http://localhost:3001/");
@@ -18,18 +20,33 @@ const useSocket = () => {
       });
     }
 
-    //TODO: When current user adds video
+    //When current user adds video
+    if (state.isSignedIn && state.isVideoAdded && !prevVideoAdded.current) {
+      console.log("======> emit setVideo");
+      prevVideoAdded.current = true;
+      socket.emit("client:setVideo", {
+        user: state.currentUser,
+        videoId: state.currentVideo.id,
+      });
+    }
+
     //TODO: When current user closes video
     //TODO: When current user plays video
     //TODO: When current user pauses video
     //TODO: When current user seeks video
+    //TODO: Polling to transmit video position
 
     // When another user signs in
     socket.on("server:updateUsers", ({ usersList, currentVideoId, user }) => {
       if (state.isSignedIn && state.currentUser.id !== user?.id) {
         setMessage(`${user.name} has joined the party!`);
       }
-      //TODO: Handle if a video is already added
+      // If a video is already added
+      if (currentVideoId) {
+        setMessage(`A video is already added!`);
+        setVideoId(currentVideoId);
+      }
+      //TODO: Handle if a video is playing
       setUsersList(usersList);
     });
 
@@ -41,7 +58,15 @@ const useSocket = () => {
       }
     });
 
-    //TODO: When another user adds video
+    // When another user adds video
+    socket.on("server:updateVideo", ({ user, currentVideoId }) => {
+      if (state.isSignedIn && state.currentUser.id !== user?.id) {
+        setMessage(`${user.name} has added a new video!`);
+        prevVideoAdded.current = true;
+        setVideoId(currentVideoId);
+      }
+    });
+
     //TODO: When another user closes video
     //TODO: When another user plays video
     //TODO: When another user pauses video
@@ -50,7 +75,7 @@ const useSocket = () => {
     // return () => {
     //   socket.disconnect();
     // };
-  }, [state.isSignedIn]);
+  }, [state.isSignedIn, state.isVideoAdded]);
 };
 
 export default useSocket;
