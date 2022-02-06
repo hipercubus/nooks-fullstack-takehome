@@ -1,13 +1,7 @@
 import React, { useContext, useRef, FormEvent } from "react";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  TextField,
-} from "@mui/material";
+import { Button, CardActions, CardContent, TextField } from "@mui/material";
 import { GlobalContext } from "../context/GlobalContext";
-import styled from "@emotion/styled";
+import CustomCard from "./CustomCard";
 
 function VideoForm() {
   const videoId = useRef<HTMLInputElement>();
@@ -19,6 +13,7 @@ function VideoForm() {
       setVideoId(videoId.current?.value);
     }
     //TODO: Notify when videoId is empty
+    //TODO: Make it work with youtube URL
   };
 
   return (
@@ -42,10 +37,5 @@ function VideoForm() {
     </form>
   );
 }
-
-const CustomCard = styled(Card)`
-  width: 30rem;
-  background-color: #ffffffcc;
-`;
 
 export default VideoForm;

@@ -1,13 +1,8 @@
 import React, { FormEvent, useContext, useRef } from "react";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  TextField,
-} from "@mui/material";
+import { Button, CardActions, CardContent, TextField } from "@mui/material";
 import styled from "@emotion/styled";
 import { GlobalContext } from "../context/GlobalContext";
+import CustomCard from "./CustomCard";
 
 function SignInForm() {
   const userName = useRef<HTMLInputElement>();
@@ -41,10 +36,5 @@ function SignInForm() {
     </form>
   );
 }
-
-const CustomCard = styled(Card)`
-  width: 30rem;
-  background-color: #ffffffcc;
-`;
 
 export default SignInForm;
