@@ -16,7 +16,7 @@ yarn
 
 ### Run in development mode
 
-#### Server
+#### Server (on localhost:3001)
 
 ```bash
 yarn server
@@ -28,7 +28,7 @@ or (if you have nodemon installed):
 yarn server:dev
 ```
 
-#### Client
+#### Client (on localhost:3000)
 
 ```bash
 yarn start
